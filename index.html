@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Cancelamento de Contrato</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="manifest" href="site.webmanifest">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #F2A900;
+      --accent-light: #fff5df;
+      --header-blue: #C2410C;
+      --cyan: #FF7A00;
+      --ink: #1a1a2e;
+      --ink-soft: #3d3d5c;
+      --ink-muted: #8888aa;
+      --line: #e8ddd0;
+      --bg: #faf7f2;
+      --white: #ffffff;
+      --shadow: 0 2px 20px rgba(194,65,12,0.10);
+      --radius: 4px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 40px 20px 80px;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      max-width: 780px;
+      margin: 0 auto 36px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo-mark {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--cyan), var(--accent));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; flex-shrink: 0;
+    }
+    .page-header h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--ink-soft);
+    }
+    .page-header h1 strong {
+      display: block;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    /* ── Card ── */
+    .card {
+      max-width: 780px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* ── Cabeçalho laranja ── */
+    .card-top {
+      background: linear-gradient(90deg, var(--cyan), #FFB020);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    #formTitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      border-bottom: 1px solid rgba(255,255,255,0.35);
+      padding-bottom: 2px;
+      text-align: center;
+      cursor: text;
+      transition: border-color 0.2s;
+    }
+    #formTitle:focus { border-bottom-color: #fff; }
+
+    /* ── Intro ── */
+    .intro {
+      padding: 18px 24px 4px;
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+    .intro strong { color: var(--ink); }
+
+    /* ── Tabela de campos ── */
+    .fields-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .fields-table tr {
+      border-bottom: 1px solid var(--line);
+      transition: background 0.15s;
+    }
+    .fields-table tr:last-child { border-bottom: none; }
+    .fields-table tr:hover { background: #fdf9f3; }
+    .fields-table tr:focus-within { background: var(--accent-light); }
+
+    /* Coluna esquerda — rótulo */
+    .fields-table td.lbl {
+      width: 260px;
+      padding: 13px 16px 13px 24px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+      border-right: 2px solid var(--line);
+      vertical-align: middle;
+      transition: border-color 0.2s;
+    }
+    .fields-table tr:focus-within td.lbl {
+      border-right-color: var(--accent);
+    }
+
+    /* Coluna direita — input */
+    .fields-table td.val {
+      padding: 8px 16px 8px 20px;
+      vertical-align: middle;
+    }
+
+    .field-input {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      padding: 5px 6px;
+      border-radius: var(--radius);
+      transition: background 0.15s;
+    }
+    .field-input:focus { background: rgba(242,169,0,0.12); }
+    .field-input::placeholder { color: var(--ink-muted); font-style: italic; }
+
+    select.field-input { cursor: pointer; }
+
+    /* ── Actions ── */
+    .actions {
+      padding: 20px 24px 28px;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+    }
+
+    .btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      letter-spacing: 0.02em;
+    }
+    .btn:active { transform: scale(0.98); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink-soft);
+      border: 1px solid var(--line);
+    }
+    .btn-ghost:hover { background: var(--bg); }
+
+    .btn-primary {
+      background: var(--header-blue);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-email {
+      background: linear-gradient(90deg, var(--cyan), var(--accent));
+      color: #fff;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-email:hover { opacity: 0.88; }
+    .btn-email svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 28px; left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: var(--ink); color: #fff;
+      padding: 12px 22px; border-radius: 30px;
+      font-size: 0.85rem; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+      opacity: 0; pointer-events: none; z-index: 100;
+      white-space: nowrap;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    @media (max-width: 560px) {
+      .fields-table td.lbl { width: 150px; font-size: 0.78rem; padding-left: 14px; }
+      .card-top { padding: 14px 16px; }
+      .actions { padding: 16px; }
+      #toast { white-space: normal; max-width: 88vw; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <path d="M14 2v6h6"/>
+        <path d="m9.5 14.5 5 5"/>
+        <path d="m14.5 14.5-5 5"/>
+      </svg>
+    </div>
+    <h1><strong>Cancelamento de Contrato</strong>Financiamento de Veículos</h1>
+  </header>
+
+  <div class="card">
+
+    <!-- Título fixo -->
+    <div class="card-top">
+      <h2 id="formTitle" style="font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#fff;text-align:center;width:100%;">
+        Cancelamento de Contrato
+      </h2>
+    </div>
+
+    <!-- Texto introdutório -->
+    <div class="intro">
+      Prezados(as) ,<br><br>
+      Solicito valores para o cancalemento de contrato, abaixo dados da operação:
+    </div>
+
+    <!-- Tabela de campos -->
+    <form id="cancelForm" onsubmit="return false">
+      <table class="fields-table">
+        <tbody>
+
+          <tr>
+            <td class="lbl">Proposta</td>
+            <td class="val"><input class="field-input" id="proposta" type="text" /></td>
+          </tr>
+
+          <tr>
+            <td class="lbl">Contrato</td>
+            <td class="val"><input class="field-input" id="contrato" type="text" /></td>
+          </tr>
+
+          <tr>
+            <td class="lbl">DN</td>
+            <td class="val"><input class="field-input" id="dn" type="text" /></td>
+          </tr>
+
+          <tr>
+            <td class="lbl">Motivo do cancelamento</td>
+            <td class="val">
+              <select class="field-input" id="motivoCancelamento">
+                <option value="">Selecione...</option>
+                <option value="Desacordo comercial">Desacordo comercial</option>
+                <option value="Prazo divergente">Prazo divergente</option>
+                <option value="Parcela divergente">Parcela divergente</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="lbl">Usuário solicitante</td>
+            <td class="val">
+              <select class="field-input" id="usuarioSolicitante">
+                <option value="Cliente">Cliente</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="lbl">Data de início do contrato</td>
+            <td class="val"><input class="field-input" id="dataInicioContrato" type="text" /></td>
+          </tr>
+
+          <tr>
+            <td class="lbl">Data de inclusão de Gravame</td>
+            <td class="val"><input class="field-input" id="dataInclusaoGravame" type="text" /></td>
+          </tr>
+
+          <tr>
+            <td class="lbl">DN Possui adiantamento vigente?</td>
+            <td class="val">
+              <select class="field-input" id="possuiAdiantamento">
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="lbl">Haverá nova operação para o mesmo cliente com o mesmo chassi?</td>
+            <td class="val">
+              <select class="field-input" id="novaOperacaoChassi">
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="lbl">Operação possui PPS? (SPF)</td>
+            <td class="val">
+              <select class="field-input" id="possuiPPS">
+                <option value="Não" selected>Não</option>
+                <option value="Sim">Sim</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="lbl">Operação possui Gar. Estendida?</td>
+            <td class="val">
+              <select class="field-input" id="possuiGarantiaEstendida">
+                <option value="Não" selected>Não</option>
+                <option value="Sim">Sim</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="lbl">Operação possui Casco?</td>
+            <td class="val">
+              <select class="field-input" id="possuiCasco">
+                <option value="Não" selected>Não</option>
+                <option value="Sim">Sim</option>
+              </select>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </form>
+
+    <!-- Botões -->
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="clearForm()">Limpar</button>
+      <button class="btn btn-primary" onclick="saveForm()">Salvar</button>
+      <button class="btn btn-email" onclick="sendEmail()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m2 7 10 7 10-7"/>
+        </svg>
+        Enviar por E-mail
+      </button>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    function g(id) { return document.getElementById(id).value.trim(); }
+
+    function clearForm() {
+      if (!confirm('Deseja limpar todos os campos?')) return;
+      document.getElementById('cancelForm').reset();
+    }
+
+    function saveForm() {
+      const data = {
+        proposta: g('proposta'), contrato: g('contrato'), dn: g('dn'),
+        motivoCancelamento: g('motivoCancelamento'), usuarioSolicitante: g('usuarioSolicitante'),
+        dataInicioContrato: g('dataInicioContrato'), dataInclusaoGravame: g('dataInclusaoGravame'),
+        possuiAdiantamento: g('possuiAdiantamento'), novaOperacaoChassi: g('novaOperacaoChassi'),
+        possuiPPS: g('possuiPPS'), possuiGarantiaEstendida: g('possuiGarantiaEstendida'),
+        possuiCasco: g('possuiCasco'),
+        savedAt: new Date().toISOString()
+      };
+      try { localStorage.setItem('cancelamentoContratoForm', JSON.stringify(data)); } catch(e) {}
+      showToast('✓ Formulário salvo!');
+    }
+
+    function buildEmailHtml() {
+      const titulo   = 'CANCELAMENTO DE CONTRATO';
+      const proposta = g('proposta') || '—';
+      const contrato = g('contrato') || '—';
+      const dn       = g('dn')       || '—';
+      const motivo   = g('motivoCancelamento') || '—';
+      const usuario  = g('usuarioSolicitante')  || '—';
+      const dtInicio = g('dataInicioContrato')  || '—';
+      const dtGravame= g('dataInclusaoGravame') || '—';
+      const adiant   = g('possuiAdiantamento')  || '—';
+      const novaOp   = g('novaOperacaoChassi')  || '—';
+      const pps      = g('possuiPPS')           || '—';
+      const garEst   = g('possuiGarantiaEstendida') || '—';
+      const casco    = g('possuiCasco')         || '—';
+
+      const row = (label, value) => `
+        <tr>
+          <td style="border:1px solid #ccc;padding:8px 14px;font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#1a1a2e;width:260px;background:#f5f5f5;white-space:nowrap;">${label}</td>
+          <td style="border:1px solid #ccc;padding:8px 14px;font-family:Arial,sans-serif;font-size:13px;color:#1a1a2e;">${value}</td>
+        </tr>`;
+
+      return `
+<p style="font-family:Arial,sans-serif;font-size:13px;margin:0 0 4px 0;color:#000;">Prezados(as) ,</p>
+<p style="font-family:Arial,sans-serif;font-size:13px;margin:0 0 24px 0;color:#000;">Solicito valores para o cancalemento de contrato, abaixo dados da operação:</p>
+<table style="border-collapse:collapse;width:600px;border:1px solid #ccc;">
+  <thead>
+    <tr>
+      <th colspan="2" style="background:#FF9500;color:#fff;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:12px 14px;text-align:center;border:1px solid #FF9500;">
+        ${titulo}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    ${row('Proposta', proposta)}
+    ${row('Contrato', contrato)}
+    ${row('DN', dn)}
+    ${row('Motivo do cancelamento', motivo)}
+    ${row('Usuário solicitante', usuario)}
+    ${row('Data de início do contrato', dtInicio)}
+    ${row('Data de inclusão de Gravame', dtGravame)}
+    ${row('DN Possui adiantamento vigente?', adiant)}
+    ${row('Haverá nova operação para o mesmo cliente com o mesmo chassi?', novaOp)}
+    ${row('Operação possui PPS? (SPF)', pps)}
+    ${row('Operação possui Gar. Estendida?', garEst)}
+    ${row('Operação possui Casco?', casco)}
+  </tbody>
+</table>`;
+    }
+
+    async function sendEmail() {
+      const contrato = g('contrato') || '—';
+      const proposta = g('proposta') || '—';
+      const destinatario = 'suportebackofficecdc@vwfs.com';
+      const subject  = `Cancelamento de contrato - Contrato : ${contrato} / Proposta : ${proposta}`;
+      const html     = buildEmailHtml();
+
+      let copied = false;
+      try {
+        const blob = new Blob([html], { type: 'text/html' });
+        await navigator.clipboard.write([new ClipboardItem({ 'text/html': blob })]);
+        copied = true;
+      } catch(e) {
+        try {
+          const el = document.createElement('div');
+          el.innerHTML = html;
+          el.style.cssText = 'position:fixed;left:-9999px;top:0;pointer-events:none';
+          document.body.appendChild(el);
+          const range = document.createRange();
+          range.selectNode(el);
+          window.getSelection().removeAllRanges();
+          window.getSelection().addRange(range);
+          document.execCommand('copy');
+          window.getSelection().removeAllRanges();
+          document.body.removeChild(el);
+          copied = true;
+        } catch(e2) { copied = false; }
+      }
+
+      window.location.href = `mailto:${destinatario}?subject=${encodeURIComponent(subject)}`;
+
+      showToast(copied
+        ? '📧 E-mail aberto! Cole com Ctrl+V no corpo.'
+        : '📧 E-mail aberto! Cole o formulário manualmente.');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 5000);
+    }
+
+    // Restaurar dados salvos
+    window.addEventListener('load', () => {
+      let saved;
+      try { saved = localStorage.getItem('cancelamentoContratoForm'); } catch(e) { saved = null; }
+      if (!saved) return;
+      try {
+        const d = JSON.parse(saved);
+        const set = (id, val) => { if (val && document.getElementById(id)) document.getElementById(id).value = val; };
+        set('proposta', d.proposta); set('contrato', d.contrato); set('dn', d.dn);
+        set('motivoCancelamento', d.motivoCancelamento); set('usuarioSolicitante', d.usuarioSolicitante);
+        set('dataInicioContrato', d.dataInicioContrato); set('dataInclusaoGravame', d.dataInclusaoGravame);
+        set('possuiAdiantamento', d.possuiAdiantamento); set('novaOperacaoChassi', d.novaOperacaoChassi);
+        set('possuiPPS', d.possuiPPS); set('possuiGarantiaEstendida', d.possuiGarantiaEstendida);
+        set('possuiCasco', d.possuiCasco);
+      } catch(e) {}
+    });
+  </script>
+</body>
+</html>
