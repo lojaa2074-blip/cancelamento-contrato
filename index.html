@@ -94,13 +94,9 @@
       border: none;
       outline: none;
       width: 100%;
-      border-bottom: 1px solid rgba(255,255,255,0.35);
-      padding-bottom: 2px;
       text-align: center;
       cursor: text;
-      transition: border-color 0.2s;
     }
-    #formTitle:focus { border-bottom-color: #fff; }
 
     /* ── Intro ── */
     .intro {
@@ -168,10 +164,10 @@
     input[type="date"].field-input { cursor: pointer; }
     input[type="date"].field-input::-webkit-calendar-picker-indicator {
       cursor: pointer;
-      opacity: 0.65;
-      filter: invert(46%) sepia(85%) saturate(1000%) hue-rotate(1deg) brightness(101%) contrast(101%);
+      opacity: 1;
+      filter: brightness(0) saturate(100%);
     }
-    input[type="date"].field-input::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+    input[type="date"].field-input::-webkit-calendar-picker-indicator:hover { opacity: 0.7; }
 
     /* ── Actions ── */
     .actions {
