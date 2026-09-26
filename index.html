@@ -165,6 +165,13 @@
     .field-input::placeholder { color: var(--ink-muted); font-style: italic; }
 
     select.field-input { cursor: pointer; }
+    input[type="date"].field-input { cursor: pointer; }
+    input[type="date"].field-input::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      opacity: 0.65;
+      filter: invert(46%) sepia(85%) saturate(1000%) hue-rotate(1deg) brightness(101%) contrast(101%);
+    }
+    input[type="date"].field-input::-webkit-calendar-picker-indicator:hover { opacity: 1; }
 
     /* ── Actions ── */
     .actions {
@@ -304,12 +311,12 @@
 
           <tr>
             <td class="lbl">Data de início do contrato</td>
-            <td class="val"><input class="field-input" id="dataInicioContrato" type="text" /></td>
+            <td class="val"><input class="field-input" id="dataInicioContrato" type="date" /></td>
           </tr>
 
           <tr>
             <td class="lbl">Data de inclusão de Gravame</td>
-            <td class="val"><input class="field-input" id="dataInclusaoGravame" type="text" /></td>
+            <td class="val"><input class="field-input" id="dataInclusaoGravame" type="date" /></td>
           </tr>
 
           <tr>
@@ -385,6 +392,13 @@
   <script>
     function g(id) { return document.getElementById(id).value.trim(); }
 
+    function formatDate(id) {
+      const v = g(id);
+      if (!v) return '';
+      const [y, m, d] = v.split('-');
+      return (y && m && d) ? `${d}/${m}/${y}` : v;
+    }
+
     function clearForm() {
       if (!confirm('Deseja limpar todos os campos?')) return;
       document.getElementById('cancelForm').reset();
@@ -411,8 +425,8 @@
       const dn       = g('dn')       || '—';
       const motivo   = g('motivoCancelamento') || '—';
       const usuario  = g('usuarioSolicitante')  || '—';
-      const dtInicio = g('dataInicioContrato')  || '—';
-      const dtGravame= g('dataInclusaoGravame') || '—';
+      const dtInicio = formatDate('dataInicioContrato')  || '—';
+      const dtGravame= formatDate('dataInclusaoGravame') || '—';
       const adiant   = g('possuiAdiantamento')  || '—';
       const novaOp   = g('novaOperacaoChassi')  || '—';
       const pps      = g('possuiPPS')           || '—';
